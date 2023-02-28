@@ -16,10 +16,12 @@ class DatabaseSeeder extends Seeder
         $threads = Thread::factory(50)->create();
         $users = User::all();
         $threads->each(function(Thread $thread) use ($users) {
-            Reply::factory(10)->create([
-                'thread_id' => $thread,
-                'user_id' => $users->random()
-            ]);
+            for ($i = 0; $i < 10; $i++) {
+                Reply::factory()->create([
+                    'thread_id' => $thread,
+                    'user_id' => $users->random()
+                ]);
+            }
         });
     }
 }

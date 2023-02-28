@@ -18,6 +18,18 @@ const props = defineProps({ thread: Object });
                     {{ thread.body }}
                 </template>
             </Card>
+            <Card v-for="reply in thread.replies" :key="reply.id">
+                <template #header>
+                    <h4 class="font-semibold">
+                        <a href="#" class="text-blue-500 hover:underline">
+                            {{ reply.owner.name }}
+                        </a> said {{ reply.created }}...
+                    </h4>
+                </template>
+                <template #body>
+                    {{ reply.body }}
+                </template>
+            </Card>
         </div>
     </DefaultLayout>
 </template>

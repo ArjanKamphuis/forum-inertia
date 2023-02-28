@@ -19,7 +19,7 @@ class ThreadsController extends Controller
     public function show(Thread $thread): Response
     {
         return Inertia::render('Threads/Show', [
-            'thread' => $thread
+            'thread' => new ThreadResource($thread)
         ]);
     }
 }
