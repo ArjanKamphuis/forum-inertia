@@ -15,7 +15,7 @@ const title = computed(() => 'Forum Threads');
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">{{ title }}</h2>
         </template>
         <div class="py-12 space-y-4">
-            <Card v-for="thread in threads" :key="thread.id">
+            <Card v-for="thread in threads" :key="thread.id" class="mx-auto block md:w-2/3 max-w-7xl">
                 <template #header>
                     <h4 class="text-lg font-semibold">
                         <Link :href="thread.path" class="text-blue-500 hover:underline">{{ thread.title }}</Link>

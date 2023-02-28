@@ -12,6 +12,7 @@ class ThreadResource extends JsonResource
         $thread = parent::toArray($request);
         $thread['path'] = $this->resource->path();
         $thread['replies'] = ReplyResource::collection($this->resource->replies);
+        $thread['owner'] = $this->owner;
         return $thread;
     }
 }
