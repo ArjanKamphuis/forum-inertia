@@ -1,10 +1,13 @@
 <script setup>
-import { Head } from '@inertiajs/vue3';
+import { Head, Link, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import Card from '@/Components/Card.vue';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
+import NewReplyForm from '@/Pages/Threads/Partials/NewReplyForm.vue';
 import Reply from '@/Pages/Threads/Partials/Reply.vue';
 
 const props = defineProps({ thread: Object });
+const signedIn = computed(() => usePage().props.auth.user ?? false);
 </script>
 
 <template>
@@ -28,6 +31,12 @@ const props = defineProps({ thread: Object });
                     </template>
                 </Card>
                 <Reply v-for="reply in thread.replies" :key="reply.id" :reply="reply" />
+                <NewReplyForm v-if="signedIn" :thread-id="thread.id" />
+                <p v-else class="text-center">
+                    Please <Link class="text-blue-500 hover:underline" :href="route('login')">sign in</Link> 
+                    or <Link class="text-blue-500 hover:underline" :href="route('register')">register</Link> 
+                    to participate in this discussion.
+                </p>
             </div>
         </div>
     </DefaultLayout>

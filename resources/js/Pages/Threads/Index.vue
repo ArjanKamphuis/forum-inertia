@@ -14,17 +14,19 @@ const title = computed(() => 'Forum Threads');
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">{{ title }}</h2>
         </template>
-        <div class="py-12 space-y-4">
-            <Card v-for="thread in threads" :key="thread.id" class="mx-auto block md:w-2/3 max-w-7xl">
-                <template #header>
-                    <h4 class="text-lg font-semibold">
-                        <Link :href="thread.path" class="text-blue-500 hover:underline">{{ thread.title }}</Link>
-                    </h4>
-                </template>
-                <template #body>
-                    {{ thread.body }}
-                </template>
-            </Card>
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="space-y-4">
+                <Card v-for="thread in threads" :key="thread.id">
+                    <template #header>
+                        <h4 class="text-lg font-semibold">
+                            <Link :href="thread.path" class="text-blue-500 hover:underline">{{ thread.title }}</Link>
+                        </h4>
+                    </template>
+                    <template #body>
+                        {{ thread.body }}
+                    </template>
+                </Card>
+            </div>
         </div>
     </DefaultLayout>
 </template>
