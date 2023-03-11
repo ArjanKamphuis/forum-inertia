@@ -42,3 +42,4 @@ require __DIR__.'/auth.php';
 Route::get('/threads', [ThreadsController::class, 'index'])->name('threads');
 Route::get('/threads/{thread}', [ThreadsController::class, 'show']);
 Route::post('/threads/{thread}/replies', [RepliesController::class, 'store'])->name('threads.add-reply');
+Route::post('/threads', [ThreadsController::class, 'store']);
