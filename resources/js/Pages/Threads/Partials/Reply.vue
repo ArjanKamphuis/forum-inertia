@@ -9,7 +9,7 @@ const props = defineProps({ reply: Object });
             <h4 class="font-semibold">
                 <a href="#" class="text-blue-500 hover:underline">
                     {{ reply.owner.name }}
-                </a> replied {{ reply.created }}...
+                </a> replied {{ reply.created_at }}...
             </h4>
         </template>
         <template #body>
