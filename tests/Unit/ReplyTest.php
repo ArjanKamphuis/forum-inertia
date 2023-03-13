@@ -11,8 +11,7 @@ class ReplyTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
-    public function it_has_an_owner(): void
+    public function test_it_has_an_owner(): void
     {
         $reply = create(Reply::class);
         $this->assertInstanceOf(User::class, $reply->owner);

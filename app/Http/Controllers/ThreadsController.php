@@ -13,13 +13,13 @@ class ThreadsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->only('store');
+        $this->middleware('auth')->except(['index', 'show']);
     }
 
     public function index(): Response
     {
         return Inertia::render('Threads/Index', [
-            'threads' => ThreadIndexResource::collection(Thread::all())
+            'threads' => ThreadIndexResource::collection(Thread::latest()->get())
         ]);
     }
 
@@ -28,6 +28,11 @@ class ThreadsController extends Controller
         return Inertia::render('Threads/Show', [
             'thread' => ThreadShowResource::make($thread)
         ]);
+    }
+
+    public function create(): Response
+    {
+        return Inertia::render('Threads/Create');
     }
 
     public function store(): RedirectResponse

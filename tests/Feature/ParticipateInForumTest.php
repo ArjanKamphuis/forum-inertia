@@ -13,21 +13,17 @@ class ParticipateInForumTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
-    public function unauthenticated_users_may_not_add_replies(): void
+    public function test_unauthenticated_users_may_not_add_replies(): void
     {
         $this->expectException(AuthenticationException::class);
-        $this->withoutExceptionHandling()
-            ->post('/threads/1/replies', []);
+        $this->post('/threads/1/replies', []);
     }
 
-    /** @test */
-    public function an_authenticated_user_may_participate_in_forum_threads(): void
+    public function test_an_authenticated_user_may_participate_in_forum_threads(): void
     {
         $thread = create(Thread::class);
         $reply = make(Reply::class);
 
-        $this->withoutExceptionHandling();
         $this->signIn()->post("{$thread->path()}/replies", $reply->toArray());
         $this->get($thread->path())
             ->assertSee($reply->body);

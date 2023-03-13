@@ -20,20 +20,17 @@ class ThreadTest extends TestCase
         $this->thread = create(Thread::class);
     }
 
-    /** @test */
-    public function it_has_replies(): void
+    public function test_it_has_replies(): void
     {
         $this->assertInstanceOf(Collection::class, $this->thread->replies);
     }
 
-    /** @test */
-    public function it_has_an_owner(): void
+    public function test_it_has_an_owner(): void
     {
         $this->assertInstanceOf(User::class, $this->thread->owner);
     }
 
-    /** @test */
-    public function it_can_add_a_reply(): void
+    public function test_it_can_add_a_reply(): void
     {
         $this->thread->addReply([
             'body' => 'foobar',

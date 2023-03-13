@@ -26,9 +26,8 @@ const signedIn = computed(() => usePage().props.auth.user ??= false );
 
                     <!-- Navigation Links -->
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                        <NavLink :href="route('threads')" :active="route().current('threads')">
-                            All Threads
-                        </NavLink>
+                        <NavLink :href="route('threads')" :active="route().current('threads')">All Threads</NavLink>
+                        <NavLink :href="route('threads.create')" :active="route().current('threads.create')">New Thread</NavLink>
                     </div>
                 </div>
 
