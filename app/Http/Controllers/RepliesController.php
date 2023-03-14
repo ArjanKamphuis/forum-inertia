@@ -16,6 +16,9 @@ class RepliesController extends Controller
 
     public function store(Channel $channel, Thread $thread): RedirectResponse
     {
+        request()->validate([
+            'body' => ['required']
+        ]);
         $thread->addReply([
             'body' => request('body'),
             'user_id' => auth()->id()
