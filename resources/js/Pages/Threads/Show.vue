@@ -31,7 +31,7 @@ const signedIn = computed(() => usePage().props.auth.user ?? false);
                     </template>
                 </Card>
                 <Reply v-for="reply in thread.replies" :key="reply.id" :reply="reply" />
-                <NewReplyForm v-if="signedIn" :thread-id="thread.id" />
+                <NewReplyForm v-if="signedIn" :thread-path="thread.path" />
                 <p v-else class="text-center">
                     Please <Link class="text-blue-500 hover:underline" :href="route('login')">sign in</Link> 
                     or <Link class="text-blue-500 hover:underline" :href="route('register')">register</Link> 

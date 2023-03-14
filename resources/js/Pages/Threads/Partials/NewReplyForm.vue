@@ -5,11 +5,11 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextArea from '@/Components/TextArea.vue';
 import { useForm } from '@inertiajs/vue3';
 
-const props = defineProps({ 'thread-id': { type: Number, required: true } });
+const props = defineProps({ 'thread-path': { type: String, required: true } });
 const form = useForm({ body: '' });
 
 const addReply = () => {
-    form.post(route('threads.add-reply', props.threadId), {
+    form.post(`${props.threadPath}/replies`, {
         preserveScroll: true,
         onSuccess: () => form.reset()
     });

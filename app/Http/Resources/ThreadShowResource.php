@@ -15,9 +15,9 @@ class ThreadShowResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
             'title' => $this->title,
             'body' => $this->body,
+            'path' => $this->path(),
             'owner' => ['name' => $this->owner->name],
             'replies' => ReplyIndexResource::collection($this->replies)
         ];
