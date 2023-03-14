@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ThreadIndexResource;
 use App\Http\Resources\ThreadShowResource;
+use App\Models\Channel;
 use App\Models\Thread;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -23,7 +24,7 @@ class ThreadsController extends Controller
         ]);
     }
 
-    public function show(Thread $thread): Response
+    public function show(Channel $channel, Thread $thread): Response
     {
         return Inertia::render('Threads/Show', [
             'thread' => ThreadShowResource::make($thread)
@@ -39,6 +40,7 @@ class ThreadsController extends Controller
     {
         $thread = Thread::create([
             'user_id' => auth()->id(),
+            'channel_id' => request('channel_id'),
             'title' => request('title'),
             'body' => request('body')
         ]);

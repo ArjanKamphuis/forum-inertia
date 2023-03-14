@@ -13,7 +13,7 @@ class Thread extends Model
 
     public function path(): string
     {
-        return "/threads/{$this->id}";
+        return "/threads/{$this->channel->slug}/{$this->id}";
     }
 
     public function replies(): HasMany
@@ -24,6 +24,11 @@ class Thread extends Model
     public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function channel(): BelongsTo
+    {
+        return $this->belongsTo(Channel::class);
     }
 
     public function addReply(array $attributes)
