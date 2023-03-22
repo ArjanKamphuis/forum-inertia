@@ -18,14 +18,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::get('/', fn() => redirect(route('threads')));
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -39,8 +32,8 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/threads', [ThreadsController::class, 'index'])->name('threads');
 Route::get('/threads/create', [ThreadsController::class, 'create'])->name('threads.create');
+Route::get('/threads/{channel:slug?}', [ThreadsController::class, 'index'])->name('threads');
 Route::get('/threads/{channel:slug}/{thread}', [ThreadsController::class, 'show']);
 Route::post('/threads/{channel:slug}/{thread}/replies', [RepliesController::class, 'store'])->name('threads.add-reply');
 Route::post('/threads', [ThreadsController::class, 'store']);

@@ -17,10 +17,11 @@ class ThreadsController extends Controller
         $this->middleware('auth')->except(['index', 'show']);
     }
 
-    public function index(): Response
+    public function index(?Channel $channel): Response
     {
+        $threads = $channel->exists ? $channel->threads()->latest() : Thread::latest();
         return Inertia::render('Threads/Index', [
-            'threads' => ThreadIndexResource::collection(Thread::latest()->get())
+            'threads' => ThreadIndexResource::collection($threads->get())
         ]);
     }
 
