@@ -26,7 +26,29 @@ const signedIn = computed(() => !! usePage().props.auth.user );
 
                     <!-- Navigation Links -->
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                        <NavLink :href="route('threads')" :active="route().current('threads', { channel: null })">All Threads</NavLink>
+                        <div class="hidden sm:flex sm:items-center">
+                            <div class="relative">
+                                <Dropdown width="48">
+                                    <template #trigger>
+                                        <span class="inline-flex rounded-md">
+                                            <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                                                Browse
+                                                <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd"
+                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+                                            </button>
+                                        </span>
+                                    </template>
+                                    <template #content>
+                                        <DropdownLink :href="route('threads')" :active="route().current('threads', { by: null, channel: null })">All Threads</DropdownLink>
+                                        <DropdownLink v-if="signedIn" :href="route('threads', { by: usePage().props.auth.user.name })" :active="route().current('threads', { by: usePage().props.auth.user.name })">My Threads</DropdownLink>
+                                    </template>
+                                </Dropdown>
+                            </div>
+                        </div>
                         <NavLink :href="route('threads.create')" :active="route().current('threads.create')">New Thread</NavLink>
                         <div class="hidden sm:flex sm:items-center">
                             <div class="relative">
@@ -45,7 +67,7 @@ const signedIn = computed(() => !! usePage().props.auth.user );
                                         </span>
                                     </template>
                                     <template #content>
-                                        <DropdownLink v-for="channel in usePage().props.channels" :key="channel.id" :href="route('threads', channel.slug)">{{ channel.name }}</DropdownLink>
+                                        <DropdownLink v-for="channel in usePage().props.channels" :key="channel.id" :href="route('threads', { channel: channel.slug })" :active="route().current('threads', { channel: channel.slug })">{{ channel.name }}</DropdownLink>
                                     </template>
                                 </Dropdown>
                             </div>
@@ -111,7 +133,8 @@ const signedIn = computed(() => !! usePage().props.auth.user );
         <!-- Responsive Navigation Menu -->
         <div :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }" class="sm:hidden">
             <div class="pt-2 pb-3 space-y-1">
-                <ResponsiveNavLink :href="route('threads')" :active="route().current('threads', { channel: null })">All Threads</ResponsiveNavLink>
+                <ResponsiveNavLink :href="route('threads')" :active="route().current('threads', { channel: null, by: null })">All Threads</ResponsiveNavLink>
+                <ResponsiveNavLink v-if="signedIn" :href="route('threads', { by: usePage().props.auth.user.name })" :active="route().current('threads', { by: usePage().props.auth.user.name })">My Threads</ResponsiveNavLink>
                 <ResponsiveNavLink :href="route('threads.create')" :active="route().current('threads.create')">New Thread</ResponsiveNavLink>
             </div>
 

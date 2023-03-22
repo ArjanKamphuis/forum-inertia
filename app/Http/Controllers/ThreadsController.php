@@ -6,6 +6,7 @@ use App\Http\Resources\ThreadIndexResource;
 use App\Http\Resources\ThreadShowResource;
 use App\Models\Channel;
 use App\Models\Thread;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -20,6 +21,12 @@ class ThreadsController extends Controller
     public function index(?Channel $channel): Response
     {
         $threads = $channel->exists ? $channel->threads()->latest() : Thread::latest();
+
+        if ($username = request('by')) {
+            $user = User::where('name', $username)->firstOrFail();
+            $threads->where('user_id', $user->id);
+        }
+
         return Inertia::render('Threads/Index', [
             'threads' => ThreadIndexResource::collection($threads->get())
         ]);
