@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Filters\ThreadFilters;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -34,5 +36,10 @@ class Thread extends Model
     public function addReply(array $attributes): Reply
     {
         return $this->replies()->create($attributes);
+    }
+
+    public function scopeFilter(Builder $builder, ThreadFilters $filters): Builder
+    {
+        return $filters->apply($builder);
     }
 }

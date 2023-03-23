@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\ThreadFilters;
 use App\Http\Resources\ThreadIndexResource;
 use App\Http\Resources\ThreadShowResource;
 use App\Models\Channel;
 use App\Models\Thread;
-use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -18,14 +18,10 @@ class ThreadsController extends Controller
         $this->middleware('auth')->except(['index', 'show']);
     }
 
-    public function index(?Channel $channel): Response
+    public function index(?Channel $channel, ThreadFilters $filters): Response
     {
         $threads = $channel->exists ? $channel->threads()->latest() : Thread::latest();
-
-        if ($username = request('by')) {
-            $user = User::where('name', $username)->firstOrFail();
-            $threads->where('user_id', $user->id);
-        }
+        $threads->filter($filters);
 
         return Inertia::render('Threads/Index', [
             'threads' => ThreadIndexResource::collection($threads->get())
