@@ -13,6 +13,14 @@ class Thread extends Model
 {
     use HasFactory;
 
+    protected static function boot(): void
+    {
+        parent::boot();
+        static::addGlobalScope('replyCount', function(Builder $builder) {
+            $builder->withCount('replies');
+        });
+    }
+
     public function path(): string
     {
         return "/threads/{$this->channel->slug}/{$this->id}";

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Filters\ThreadFilters;
+use App\Http\Resources\ReplyIndexResource;
 use App\Http\Resources\ThreadIndexResource;
 use App\Http\Resources\ThreadShowResource;
 use App\Models\Channel;
@@ -31,7 +32,8 @@ class ThreadsController extends Controller
     public function show(Channel $channel, Thread $thread): Response
     {
         return Inertia::render('Threads/Show', [
-            'thread' => ThreadShowResource::make($thread)
+            'thread' => ThreadShowResource::make($thread),
+            'replies' => ReplyIndexResource::collection($thread->replies()->paginate(20))
         ]);
     }
 
