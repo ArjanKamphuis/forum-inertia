@@ -43,8 +43,9 @@ const signedIn = computed(() => !! usePage().props.auth.user );
                                         </span>
                                     </template>
                                     <template #content>
-                                        <DropdownLink :href="route('threads')" :active="route().current('threads', { by: null, channel: null })">All Threads</DropdownLink>
+                                        <DropdownLink :href="route('threads')" :active="route().current('threads', { by: null, channel: null, popular: null })">All Threads</DropdownLink>
                                         <DropdownLink v-if="signedIn" :href="route('threads', { by: usePage().props.auth.user.name })" :active="route().current('threads', { by: usePage().props.auth.user.name })">My Threads</DropdownLink>
+                                        <DropdownLink :href="route('threads', { popular: 1 })" :active="route().current('threads', { popular: 1 })">Popular Threads</DropdownLink>
                                     </template>
                                 </Dropdown>
                             </div>

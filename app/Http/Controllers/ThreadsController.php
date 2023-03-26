@@ -8,6 +8,7 @@ use App\Http\Resources\ThreadIndexResource;
 use App\Http\Resources\ThreadShowResource;
 use App\Models\Channel;
 use App\Models\Thread;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -19,13 +20,11 @@ class ThreadsController extends Controller
         $this->middleware('auth')->except(['index', 'show']);
     }
 
-    public function index(?Channel $channel, ThreadFilters $filters): Response
+    public function index(?Channel $channel, ThreadFilters $filters): Response|Collection
     {
-        $threads = $channel->exists ? $channel->threads()->latest() : Thread::latest();
-        $threads->filter($filters);
-
-        return Inertia::render('Threads/Index', [
-            'threads' => ThreadIndexResource::collection($threads->get())
+        $threads = $this->getThreads($channel, $filters);
+        return request()->wantsJson() ? $threads : Inertia::render('Threads/Index', [
+            'threads' => ThreadIndexResource::collection($threads)
         ]);
     }
 
@@ -56,5 +55,14 @@ class ThreadsController extends Controller
             'body' => request('body')
         ]);
         return redirect($thread->path());
+    }
+
+    protected function getThreads(Channel $channel, ThreadFilters $filters): Collection
+    {
+        $threads = Thread::filter($filters);
+        if ($channel->exists) {
+            $threads->where('channel_id', $channel->id);
+        }
+        return $threads->latest()->get();
     }
 }

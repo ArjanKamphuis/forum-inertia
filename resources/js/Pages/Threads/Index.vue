@@ -18,9 +18,12 @@ const title = computed(() => 'Forum Threads');
             <div class="space-y-4">
                 <Card v-for="thread in threads" :key="thread.id">
                     <template #header>
-                        <h4 class="text-lg font-semibold">
-                            <Link :href="thread.path" class="text-blue-500 hover:underline">{{ thread.title }}</Link>
-                        </h4>
+                        <div class="flex justify-between items-center">
+                            <h4 class="text-lg font-semibold">
+                                <Link :href="thread.path" class="text-blue-500 hover:underline">{{ thread.title }}</Link>
+                            </h4>
+                            <Link :href="thread.path" class="text-blue-500 hover:underline">{{ thread.replies_count }} {{ thread.reply_noun }}</Link>
+                        </div>
                     </template>
                     <template #body>
                         {{ thread.body }}
