@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RepliesController;
 use App\Http\Controllers\ThreadsController;
@@ -37,3 +38,5 @@ Route::get('/threads/{channel:slug?}', [ThreadsController::class, 'index'])->nam
 Route::get('/threads/{channel:slug}/{thread}', [ThreadsController::class, 'show']);
 Route::post('/threads/{channel:slug}/{thread}/replies', [RepliesController::class, 'store'])->name('threads.add-reply');
 Route::post('/threads', [ThreadsController::class, 'store']);
+
+Route::post('/replies/{reply}/favorites', [FavoritesController::class, 'store']);
