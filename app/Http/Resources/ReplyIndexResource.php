@@ -21,7 +21,7 @@ class ReplyIndexResource extends JsonResource
                 'name' => $this->owner->name
             ],
             'created_at' => $this->created_at->diffForHumans(),
-            'favorites_count' => $this->favorites()->count(),
+            'favorites_count' => $this->favorites_count,
             'is_favorited' => $this->isFavorited()
         ];
     }
