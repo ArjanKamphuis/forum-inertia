@@ -21,10 +21,13 @@ class Reply extends Model
         return $this->morphMany(Favorite::class, 'favoritable');
     }
 
-    public function favorite(): Favorite
+    public function favorite(): Favorite|bool
     {
-        $attributes = ['user_id' => auth()->id()];
-        $favorite = $this->favorites()->where($attributes);
-        return $favorite->exists() ? $favorite->first() : $this->favorites()->create($attributes);
+        return $this->isFavorited() ? false : $this->favorites()->create(['user_id' => auth()->id()]);
+    }
+
+    public function isFavorited(): bool
+    {
+        return $this->favorites()->where('user_id', auth()->id())->exists();
     }
 }
