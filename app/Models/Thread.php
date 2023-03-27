@@ -13,6 +13,8 @@ class Thread extends Model
 {
     use HasFactory;
 
+    protected $with = ['owner', 'channel'];
+
     protected static function boot(): void
     {
         parent::boot();
@@ -28,9 +30,7 @@ class Thread extends Model
 
     public function replies(): HasMany
     {
-        return $this->hasMany(Reply::class)
-            ->withCount('favorites')
-            ->with('owner');
+        return $this->hasMany(Reply::class);
     }
 
     public function owner(): BelongsTo
