@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfilesController;
 use App\Http\Controllers\RepliesController;
 use App\Http\Controllers\ThreadsController;
 use Illuminate\Foundation\Application;
@@ -40,3 +41,5 @@ Route::post('/threads/{channel:slug}/{thread}/replies', [RepliesController::clas
 Route::post('/threads', [ThreadsController::class, 'store']);
 
 Route::post('/replies/{reply}/favorites', [FavoritesController::class, 'store']);
+
+Route::get('/profiles/{user:name}', [ProfilesController::class, 'Show'])->name('profiles.show');

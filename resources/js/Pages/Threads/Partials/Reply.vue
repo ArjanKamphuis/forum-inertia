@@ -1,4 +1,5 @@
 <script setup>
+import { Link } from '@inertiajs/vue3';
 import Card from '@/Components/Card.vue';
 import FavoriteButton from './FavoriteButton.vue';
 const props = defineProps({ reply: Object });
@@ -9,9 +10,9 @@ const props = defineProps({ reply: Object });
         <template #header>
             <div class="flex items-center justify-between">
                 <h4 class="font-semibold">
-                    <a href="#" class="text-blue-500 hover:underline">
+                    <Link :href="route('profiles.show', reply.owner.name)" class="text-blue-500 hover:underline">
                         {{ reply.owner.name }}
-                    </a> replied {{ reply.created_at }}...
+                    </Link> replied {{ reply.created_at }}...
                 </h4>
                 <FavoriteButton :reply="reply" />
             </div>

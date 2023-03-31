@@ -24,7 +24,7 @@ const signedIn = computed(() => usePage().props.auth.user ?? false);
                     <Card>
                         <template #header>
                             <h4 class="font-semibold">
-                                <Link href="#" class="text-blue-500 hover:underline">
+                                <Link :href="route('profiles.show', thread.owner.name)" class="text-blue-500 hover:underline">
                                     {{ thread.owner.name }}
                                 </Link> posted: {{ thread.title }}
                             </h4>

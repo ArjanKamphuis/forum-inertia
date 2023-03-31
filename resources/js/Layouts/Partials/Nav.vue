@@ -97,7 +97,7 @@ const signedIn = computed(() => !! usePage().props.auth.user );
                             </template>
 
                             <template #content>
-                                <DropdownLink :href="route('profile.edit')"> Profile </DropdownLink>
+                                <DropdownLink :href="route('profiles.show', usePage().props.auth.user.name)"> Profile </DropdownLink>
                                 <DropdownLink :href="route('logout')" method="post" as="button">
                                     Log Out
                                 </DropdownLink>
@@ -149,10 +149,8 @@ const signedIn = computed(() => !! usePage().props.auth.user );
                 </div>
 
                 <div class="mt-3 space-y-1">
-                    <ResponsiveNavLink :href="route('profile.edit')"> Profile </ResponsiveNavLink>
-                    <ResponsiveNavLink :href="route('logout')" method="post" as="button">
-                        Log Out
-                    </ResponsiveNavLink>
+                    <ResponsiveNavLink :href="route('profiles.show', usePage().props.auth.user.name)">Profile</ResponsiveNavLink>
+                    <ResponsiveNavLink :href="route('logout')" method="post" as="button">Log Out</ResponsiveNavLink>
                 </div>
             </div>
             <div v-else class="pt-2 pb-3 space-y-1">
