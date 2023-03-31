@@ -27,7 +27,7 @@ const favorite = async () => {
 
 <template>
     <form @submit.prevent="favorite">
-        <button :disabled="disabled" type="submit" :class="extraClasses" class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest transition ease-in-out duration-150">
+        <button type="submit" :disabled="disabled" :class="extraClasses" class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest transition ease-in-out duration-150">
             {{ favoritesCount }} {{ favoriteNoun }}
         </button>
     </form>

@@ -12,9 +12,9 @@ trait Favoritable
         return $this->morphMany(Favorite::class, 'favoritable');
     }
 
-    public function favorite(): Favorite|bool
+    public function favorite(): bool
     {
-        return $this->isFavorited() ? false : $this->favorites()->create(['user_id' => auth()->id()]);
+        return $this->isFavorited() ? false : !! $this->favorites()->create(['user_id' => auth()->id()]);
     }
 
     public function isFavorited(): bool

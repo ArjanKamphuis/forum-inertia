@@ -20,7 +20,7 @@ class ThreadsController extends Controller
         $this->middleware('auth')->except(['index', 'show']);
     }
 
-    public function index(?Channel $channel, ThreadFilters $filters): Response|Collection
+    public function index(Channel $channel, ThreadFilters $filters): Response|Collection
     {
         $threads = $this->getThreads($channel, $filters);
         return request()->wantsJson() ? $threads : Inertia::render('Threads/Index', [

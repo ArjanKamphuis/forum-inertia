@@ -14,7 +14,7 @@ class FavoritesController extends Controller
         $this->middleware('auth');
     }
 
-    public function store(Reply $reply): Favorite|bool
+    public function store(Reply $reply): bool
     {
         return $reply->favorite();
     }
