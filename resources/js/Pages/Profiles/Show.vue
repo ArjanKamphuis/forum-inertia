@@ -1,10 +1,12 @@
 <script setup>
+import { defineAsyncComponent } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
-import Card from '@/Components/Card.vue';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
-import Pagination from '@/Components/Pagination.vue';
 
-const props = defineProps({ profile: Object, threads: Object });
+const Card = defineAsyncComponent(() => import('@/Components/Card.vue'));
+const Pagination = defineAsyncComponent(() => import('@/Components/Pagination.vue'));
+
+const props = defineProps({ profile: Object, threads: Object, hasPages: Boolean });
 </script>
 
 <template>
@@ -33,7 +35,7 @@ const props = defineProps({ profile: Object, threads: Object });
                         {{ thread.body }}
                     </template>
                 </Card>
-                <Pagination :links="threads.links" :meta="threads.meta" />
+                <Pagination v-if="hasPages" :links="threads.links" :meta="threads.meta" />
             </div>
         </div>
     </DefaultLayout>

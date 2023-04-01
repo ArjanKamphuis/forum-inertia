@@ -1,14 +1,15 @@
 <script setup>
 import { Head, Link, usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { computed, defineAsyncComponent } from 'vue';
 
 import Card from '@/Components/Card.vue';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
-import NewReplyForm from '@/Pages/Threads/Partials/NewReplyForm.vue';
-import Pagination from '@/Components/Pagination.vue';
-import Reply from '@/Pages/Threads/Partials/Reply.vue';
 
-const props = defineProps({ thread: Object, replies: Object });
+const NewReplyForm = defineAsyncComponent(() => import('@/Pages/Threads/Partials/NewReplyForm.vue'));
+const Pagination = defineAsyncComponent(() => import('@/Components/Pagination.vue'));
+const Reply = defineAsyncComponent(() => import('@/Pages/Threads/Partials/Reply.vue'));
+
+const props = defineProps({ thread: Object, replies: Object, hasPages: Boolean });
 const signedIn = computed(() => usePage().props.auth.user ?? false);
 </script>
 
@@ -34,7 +35,7 @@ const signedIn = computed(() => usePage().props.auth.user ?? false);
                         </template>
                     </Card>
                     <Reply v-for="reply in replies.data" :key="reply.id" :reply="reply" />
-                    <Pagination :meta="replies.meta" :links="replies.links" />
+                    <Pagination v-if="hasPages" :meta="replies.meta" :links="replies.links" />
                     <NewReplyForm v-if="signedIn" :thread-path="thread.path" />
                     <p v-else class="text-center">
                         Please <Link class="text-blue-500 hover:underline" :href="route('login')">sign in</Link> 
