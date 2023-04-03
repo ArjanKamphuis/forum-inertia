@@ -22,7 +22,8 @@ class ThreadShowResource extends JsonResource
             'path' => $this->path(),
             'owner' => ['name' => $this->owner->name],
             'replies_count' => $this->replies_count,
-            'comment_noun' => Str::plural('comment', $this->replies_count)
+            'comment_noun' => Str::plural('comment', $this->replies_count),
+            'can_update' => request()->user()?->can('update', $this->resource)
         ];
     }
 }

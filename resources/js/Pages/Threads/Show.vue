@@ -43,7 +43,7 @@ const deleteThread = async () => {
                                         {{ thread.owner.name }}
                                     </Link> posted: {{ thread.title }}
                                 </h4>
-                                <form @submit.prevent="deleteThread">
+                                <form v-if="thread.can_update" @submit.prevent="deleteThread">
                                     <DangerButton>Delete Thread</DangerButton>
                                 </form>
                             </div>

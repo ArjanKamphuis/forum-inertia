@@ -24,7 +24,7 @@ const props = defineProps({ profile: Object, threads: Object, hasPages: Boolean 
                     <template #header>
                         <div class="flex justify-between items-center">
                             <h4 class="font-semibold">
-                                <Link :href="route('profiles.show', profile.name)" class="text-blue-500 hover:underline">{{ profile.name }}</Link>
+                                <Link :href="route('profiles.show', thread.owner.name)" class="text-blue-500 hover:underline">{{ thread.owner.name }}</Link>
                                 <span> posted: </span>
                                 <Link :href="thread.path" class="text-blue-500 hover:underline">{{ thread.title }}</Link>
                             </h4>
