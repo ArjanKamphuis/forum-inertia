@@ -39,6 +39,7 @@ Route::get('/threads/{channel:slug?}', [ThreadsController::class, 'index'])->nam
 Route::get('/threads/{channel:slug}/{thread}', [ThreadsController::class, 'show']);
 Route::post('/threads/{channel:slug}/{thread}/replies', [RepliesController::class, 'store'])->name('threads.add-reply');
 Route::post('/threads', [ThreadsController::class, 'store']);
+Route::delete('/threads/{channel:slug}/{thread}', [ThreadsController::class, 'destroy']);
 
 Route::post('/replies/{reply}/favorites', [FavoritesController::class, 'store']);
 

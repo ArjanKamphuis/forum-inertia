@@ -8,8 +8,11 @@ use App\Http\Resources\ThreadIndexResource;
 use App\Http\Resources\ThreadShowResource;
 use App\Models\Channel;
 use App\Models\Thread;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response as HttpResponse;
+use Illuminate\Routing\Redirector;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -57,6 +60,12 @@ class ThreadsController extends Controller
             'body' => request('body')
         ]);
         return redirect($thread->path());
+    }
+
+    public function destroy(Channel $channel, Thread $thread): HttpResponse|ResponseFactory|Redirector|RedirectResponse
+    {
+        $thread->delete();
+        return request()->wantsJson() ? response([], 204) : redirect('/threads');
     }
 
     protected function getThreads(Channel $channel, ThreadFilters $filters): Collection

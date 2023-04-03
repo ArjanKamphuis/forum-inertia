@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Reply;
 use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -54,6 +55,25 @@ class CreateThreadsTest extends TestCase
             ->assertSessionHasErrors('channel_id');
         $this->publishThread(['channel_id' => 9999])
             ->assertSessionHasErrors('channel_id');
+    }
+
+    public function test_guests_cannot_delete_threads(): void
+    {
+        $this->withExceptionHandling()
+            ->delete('/threads/slug/1')
+            ->assertRedirect('/login');
+    }
+
+    public function test_a_thread_can_be_deleted(): void
+    {
+        $thread = create(Thread::class);
+        $reply = create(Reply::class, ['thread_id' => $thread->id]);
+
+        $this->signIn()->deleteJson($thread->path())
+            ->assertStatus(204);
+        
+        $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
     }
 
     protected function publishThread(array $overrides = []): TestResponse
