@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-// use Illuminate\Support\Facades\Gate;
-
 use App\Models\Thread;
 use App\Models\User;
 use App\Policies\ThreadPolicy;
