@@ -3,6 +3,7 @@
 namespace App\Models\Traits;
 
 use App\Models\Activity;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use ReflectionClass;
 
@@ -11,10 +12,14 @@ trait RecordsActivity
     protected static function bootRecordsActivity(): void
     {
         foreach (static::getActivitiesToRecord() as $activity) {
-            static::$activity(function (object $model) use ($activity) {
+            static::$activity(function (Model $model) use ($activity) {
                 $model->recordActivity($activity);
             });
         }
+
+        static::deleting(function(Model $model) {
+            $model->activity()->delete();
+        });
     }
 
     protected static function getActivitiesToRecord(): array
