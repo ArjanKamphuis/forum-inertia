@@ -1,12 +1,14 @@
 <script setup>
 import { defineAsyncComponent } from 'vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head } from '@inertiajs/vue3';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
 
-const Card = defineAsyncComponent(() => import('@/Components/Card.vue'));
-const Pagination = defineAsyncComponent(() => import('@/Components/Pagination.vue'));
+const props = defineProps({ profile: Object, activities: Object });
 
-const props = defineProps({ profile: Object, threads: Object, hasPages: Boolean });
+const mapComponents = {
+    created_thread: defineAsyncComponent(() => import('@/Pages/Profiles/Activities/CreatedThread.vue')),
+    created_reply: defineAsyncComponent(() => import('@/Pages/Profiles/Activities/CreatedReply.vue')),
+}
 </script>
 
 <template>
@@ -15,28 +17,17 @@ const props = defineProps({ profile: Object, threads: Object, hasPages: Boolean 
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 {{ profile.name }}
-                <small>Since <time>{{ profile.created_at }}</time></small>
             </h2>
         </template>
         <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="space-y-4">
-                <Card v-for="thread in threads.data" :key="thread.id">
-                    <template #header>
-                        <div class="flex justify-between items-center">
-                            <h4 class="font-semibold">
-                                <Link :href="route('profiles.show', thread.owner.name)" class="text-blue-500 hover:underline">{{ thread.owner.name }}</Link>
-                                <span> posted: </span>
-                                <Link :href="thread.path" class="text-blue-500 hover:underline">{{ thread.title }}</Link>
-                            </h4>
-                            <time>{{ thread.created_at }}</time>
-                        </div>
-                    </template>
-                    <template #body>
-                        {{ thread.body }}
-                    </template>
-                </Card>
-                <Pagination v-if="hasPages" :links="threads.links" :meta="threads.meta" />
-            </div>
+            <div class="space-y-12">
+                <div v-for="(activity, date) in activities">
+                    <h3 class="mb-4 text-lg font-bold text-center"><time class="border-b">{{ date }}</time></h3>
+                    <div class="space-y-4">
+                        <component v-for="record in activity" :is="mapComponents[record.type]" :author="profile.name" :subject="record.subject" />
+                    </div>
+                </div>
+            </div>            
         </div>
     </DefaultLayout>
 </template>

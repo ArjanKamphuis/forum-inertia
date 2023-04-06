@@ -66,7 +66,7 @@ const deleteThread = async () => {
                         <template #body>
                             <p>
                                 This thread was published <time>{{ thread.created_at }}</time> by 
-                                <Link class="text-blue-500 hover:underline" href="#">{{ thread.owner.name }}</Link>, 
+                                <Link class="text-blue-500 hover:underline" :href="route('profiles.show', thread.owner.name)">{{ thread.owner.name }}</Link>, 
                                 and currently has {{ thread.replies_count }} {{ thread.comment_noun }}.
                             </p>
                         </template>
