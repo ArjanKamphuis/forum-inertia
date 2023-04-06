@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('activities', function (Blueprint $table) {
-            $table->unique(['type', 'subject_id', 'subject_type', 'user_id']);
+            $table->primary(['type', 'subject_id', 'subject_type', 'user_id']);
             $table->string('type');
             $table->morphs('subject');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
