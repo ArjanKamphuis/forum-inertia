@@ -6,7 +6,18 @@ import DefaultLayout from '@/Layouts/DefaultLayout.vue';
 const Card = defineAsyncComponent(() => import('@/Components/Card.vue'));
 
 const props = defineProps({ threads: Array });
-const title = computed(() => 'Forum Threads');
+const title = computed(() => {
+    if (route().params.channel) {
+        return `Threads in channel: ${route().params.channel}`;
+    }
+    if (route().params.by) {
+        return `Threads by: ${route().params.by}`;
+    }
+    if (route().params.popular) {
+        return 'Popular Threads';
+    }
+    return 'All Threads';
+});
 </script>
 
 <template>
