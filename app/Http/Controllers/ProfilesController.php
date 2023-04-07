@@ -25,10 +25,7 @@ class ProfilesController extends Controller
     {
         $activities = [];
         foreach ($feed as $date => $activity) {
-            $activities[$date] = [];
-            foreach ($activity as $record) {
-                $activities[$date][] = ActivityResource::make($record);
-            }
+            $activities[$date] = ActivityResource::collection($activity);
         }
         return $activities;
     }

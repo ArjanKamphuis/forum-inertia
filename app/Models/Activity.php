@@ -15,7 +15,11 @@ class Activity extends Model
     {
         return static::where('user_id', $user->id)
             ->latest()
-            ->with('subject')
+            ->with(['subject' => function(MorphTo $morphTo) {
+                $morphTo->morphWith([
+                    Reply::class => ['thread']
+                ]);
+            }])
             ->take($take)
             ->get()
             ->groupBy(fn(Activity $activity) => $activity->created_at->format('Y-m-d'));
