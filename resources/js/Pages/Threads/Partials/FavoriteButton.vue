@@ -1,5 +1,7 @@
 <script setup>
 import { computed, ref } from 'vue';
+import EventBus from '@/Services/EventBus';
+import { router } from '@inertiajs/core';
 
 const props = defineProps({ reply: Object });
 
@@ -18,16 +20,21 @@ const favorite = async () => {
         if (response.data) {
             favoritesCount.value++;
             disabled.value = true;
+            EventBus.emit('flash', 'You favorited a reply.');
         }
     } catch (error) {
-        console.error(error.message);
+        if (error.response.status === 401) {
+            router.visit(route('login'));
+        } else {
+            console.error(error.message);
+        }
     }
 };
 </script>
 
 <template>
     <form @submit.prevent="favorite">
-        <button type="submit" :disabled="disabled" :class="extraClasses" class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest transition ease-in-out duration-150">
+        <button type="submit" :disabled="disabled"  :class="extraClasses" class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest transition ease-in-out duration-150">
             {{ favoritesCount }} {{ favoriteNoun }}
         </button>
     </form>

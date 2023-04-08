@@ -6,6 +6,7 @@ import Card from '@/Components/Card.vue';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
 import DangerButton from '@/Components/DangerButton.vue';
 import axios from 'axios';
+import EventBus from '@/Services/EventBus';
 
 const NewReplyForm = defineAsyncComponent(() => import('@/Pages/Threads/Partials/NewReplyForm.vue'));
 const Pagination = defineAsyncComponent(() => import('@/Components/Pagination.vue'));
@@ -18,7 +19,9 @@ const deleteThread = async () => {
     try {
         const response = await axios.delete(props.thread.path);
         if (response.status === 204) {
-            router.visit(route('threads'));
+            router.get(route('threads'), {
+                onSuccess: () => EventBus.emit('flash', 'Thread has been deleted!')
+            });
         }
     } catch (error) {
         console.error(error.message);

@@ -1,4 +1,5 @@
 <script setup>
+import Flash from '@/Components/Flash.vue';
 import Nav from '@/Layouts/Partials/Nav.vue';
 </script>
 
@@ -18,6 +19,7 @@ import Nav from '@/Layouts/Partials/Nav.vue';
             <!-- Page Content -->
             <main>
                 <slot />
+                <Flash />
             </main>
         </div>
     </div>

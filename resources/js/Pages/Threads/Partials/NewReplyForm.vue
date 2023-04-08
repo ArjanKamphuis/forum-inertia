@@ -5,13 +5,18 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextArea from '@/Components/TextArea.vue';
 import { useForm } from '@inertiajs/vue3';
 
+import EventBus from '@/Services/EventBus.js';
+
 const props = defineProps({ 'thread-path': { type: String, required: true } });
 const form = useForm({ body: '' });
 
 const addReply = () => {
     form.post(`${props.threadPath}/replies`, {
         preserveScroll: true,
-        onSuccess: () => form.reset()
+        onSuccess: () => {
+            form.reset();
+            EventBus.emit('flash', 'Your reply has been left.');
+        }
     });
 };
 </script>
