@@ -66,7 +66,7 @@ class ThreadsController extends Controller
     {
         $this->authorize('update', $thread);
         $thread->delete();
-        return request()->wantsJson() ? response([], 204) : redirect('/threads');
+        return request()->wantsJson() ? response([], 204) : redirect('/threads')->with('flash', 'Thread has been deleted!');
     }
 
     protected function getThreads(Channel $channel, ThreadFilters $filters): Collection

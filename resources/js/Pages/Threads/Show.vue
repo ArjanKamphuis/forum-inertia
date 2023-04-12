@@ -1,12 +1,10 @@
 <script setup>
-import { Head, Link, router, usePage } from '@inertiajs/vue3';
-import { computed, defineAsyncComponent } from 'vue';
+import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
+import { computed, defineAsyncComponent, ref, watch } from 'vue';
 
 import Card from '@/Components/Card.vue';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
 import DangerButton from '@/Components/DangerButton.vue';
-import axios from 'axios';
-import EventBus from '@/Services/EventBus';
 
 const NewReplyForm = defineAsyncComponent(() => import('@/Pages/Threads/Partials/NewReplyForm.vue'));
 const Pagination = defineAsyncComponent(() => import('@/Components/Pagination.vue'));
@@ -14,19 +12,14 @@ const Reply = defineAsyncComponent(() => import('@/Pages/Threads/Partials/Reply.
 
 const props = defineProps({ thread: Object, replies: Object, hasPages: Boolean });
 const signedIn = computed(() => usePage().props.auth.user ?? false);
-
-const deleteThread = async () => {
-    try {
-        const response = await axios.delete(props.thread.path);
-        if (response.status === 204) {
-            router.get(route('threads'), {
-                onSuccess: () => EventBus.emit('flash', 'Thread has been deleted!')
-            });
-        }
-    } catch (error) {
-        console.error(error.message);
-    }
-};
+const repliesRef = ref(null);
+const form = useForm({});
+    
+if (location.hash) {
+    watch(repliesRef, () => {
+        document.querySelector(location.hash)?.scrollIntoView();
+    });
+}
 </script>
 
 <template>
@@ -46,8 +39,8 @@ const deleteThread = async () => {
                                         {{ thread.owner.name }}
                                     </Link> posted: {{ thread.title }}
                                 </h4>
-                                <form v-if="thread.can_update" @submit.prevent="deleteThread">
-                                    <DangerButton>Delete Thread</DangerButton>
+                                <form v-if="thread.can_update" @submit.prevent="form.delete(thread.path)">
+                                    <DangerButton class="disabled:opacity-50 disabled:cursor-not-allowed" :disabled="form.processing">Delete Thread</DangerButton>
                                 </form>
                             </div>
                         </template>
@@ -55,7 +48,7 @@ const deleteThread = async () => {
                             {{ thread.body }}
                         </template>
                     </Card>
-                    <Reply v-for="reply in replies.data" :key="reply.id" :reply="reply" />
+                    <Reply ref="repliesRef" v-for="reply in replies.data" :key="reply.id" :reply="reply" />
                     <Pagination v-if="hasPages" :meta="replies.meta" :links="replies.links" />
                     <NewReplyForm v-if="signedIn" :thread-path="thread.path" />
                     <p v-else class="text-center">

@@ -13,7 +13,8 @@ class ActivityResource extends JsonResource
             'type' => $this->type,
             'subject' => match ($this->type) {
                 'created_thread' => ThreadProfileResource::make($this->subject),
-                'created_reply' => ReplyProfileResource::make($this->subject)
+                'created_reply' => ReplyProfileResource::make($this->subject),
+                'created_favorite' => FavoriteProfileResource::make($this->subject)
             }
         ];
     }

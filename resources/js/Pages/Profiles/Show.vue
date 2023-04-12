@@ -8,6 +8,7 @@ const props = defineProps({ profile: Object, activities: Object });
 const mapComponents = {
     created_thread: defineAsyncComponent(() => import('@/Pages/Profiles/Activities/CreatedThread.vue')),
     created_reply: defineAsyncComponent(() => import('@/Pages/Profiles/Activities/CreatedReply.vue')),
+    created_favorite: defineAsyncComponent(() => import('@/Pages/Profiles/Activities/CreatedFavorite.vue'))
 }
 </script>
 

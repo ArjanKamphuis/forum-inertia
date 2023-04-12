@@ -1,7 +1,7 @@
 <script setup>
 import { computed, ref } from 'vue';
 import EventBus from '@/Services/EventBus';
-import { router } from '@inertiajs/core';
+import { router } from '@inertiajs/vue3';
 
 const props = defineProps({ reply: Object });
 
