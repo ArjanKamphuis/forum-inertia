@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Channel;
 use App\Models\Reply;
 use App\Models\Thread;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Redirector;
 
 class RepliesController extends Controller
 {
@@ -29,11 +31,11 @@ class RepliesController extends Controller
         $reply->update($this->validateReply());
     }
 
-    public function destroy(Reply $reply): RedirectResponse
+    public function destroy(Reply $reply): Response|ResponseFactory|Redirector|RedirectResponse
     {
         $this->authorize('update', $reply);
         $reply->delete();
-        return back();
+        return request()->wantsJson() ? response(['status' => 'Reply deleted']) : back();
     }
 
     protected function validateReply(): array
