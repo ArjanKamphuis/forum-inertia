@@ -4,14 +4,14 @@ import { computed, defineAsyncComponent, ref, watch } from 'vue';
 
 import Card from '@/Components/Card.vue';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
-import DangerButton from '@/Components/DangerButton.vue';
 
+const DangerButton = defineAsyncComponent(() => import('@/Components/DangerButton.vue'));
 const NewReplyForm = defineAsyncComponent(() => import('@/Pages/Threads/Partials/NewReplyForm.vue'));
 const Pagination = defineAsyncComponent(() => import('@/Components/Pagination.vue'));
 const Reply = defineAsyncComponent(() => import('@/Pages/Threads/Partials/Reply.vue'));
 
 const props = defineProps({ thread: Object, replies: Object, hasPages: Boolean });
-const signedIn = computed(() => usePage().props.auth.user ?? false);
+const signedIn = computed(() => !! usePage().props.auth.user);
 const repliesRef = ref(null);
 const form = useForm({});
     

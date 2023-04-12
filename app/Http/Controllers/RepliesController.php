@@ -17,14 +17,16 @@ class RepliesController extends Controller
 
     public function store(Channel $channel, Thread $thread): RedirectResponse
     {
-        request()->validate([
-            'body' => ['required']
-        ]);
-        $thread->addReply([
-            'body' => request('body'),
+        $thread->addReply(array_merge($this->validateReply(), [
             'user_id' => auth()->id()
-        ]);
+        ]));
         return back()->with('flash', 'Your reply has been left.');
+    }
+
+    public function update(Reply $reply): void
+    {
+        $this->authorize('update', $reply);
+        $reply->update($this->validateReply());
     }
 
     public function destroy(Reply $reply): RedirectResponse
@@ -32,5 +34,12 @@ class RepliesController extends Controller
         $this->authorize('update', $reply);
         $reply->delete();
         return back();
+    }
+
+    protected function validateReply(): array
+    {
+        return request()->validate([
+            'body' => ['required']
+        ]);
     }
 }
