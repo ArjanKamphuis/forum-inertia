@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Channel;
+use App\Models\Reply;
 use App\Models\Thread;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -24,5 +25,12 @@ class RepliesController extends Controller
             'user_id' => auth()->id()
         ]);
         return back()->with('flash', 'Your reply has been left.');
+    }
+
+    public function destroy(Reply $reply): RedirectResponse
+    {
+        $this->authorize('update', $reply);
+        $reply->delete();
+        return back();
     }
 }

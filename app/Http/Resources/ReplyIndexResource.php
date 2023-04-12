@@ -22,7 +22,8 @@ class ReplyIndexResource extends JsonResource
             ],
             'created_at' => $this->created_at->diffForHumans(),
             'favorites_count' => $this->favorites_count,
-            'is_favorited' => $this->isFavorited()
+            'is_favorited' => $this->isFavorited(),
+            'can_update' => request()->user()?->can('update', $this->resource)
         ];
     }
 }

@@ -4,11 +4,12 @@ namespace Tests\Feature;
 
 use App\Models\Reply;
 use App\Models\Thread;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class ParticipateInForumTest extends TestCase
+class ParticipateInThreadsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -42,5 +43,27 @@ class ParticipateInForumTest extends TestCase
         $reply = make(Reply::class, ['body' => null]);
         $this->post("{$this->thread->path()}/replies", $reply->toArray())
             ->assertSessionHasErrors('body');
+    }
+
+    public function test_unauthorized_users_cannot_delete_replies(): void
+    {
+        $this->withExceptionHandling();
+        $reply = create(Reply::class);
+
+        $this->delete("/replies/{$reply->id}")
+            ->assertRedirect('/login');
+        
+        $this->signIn()
+            ->delete("/replies/{$reply->id}")
+            ->assertStatus(403);
+    }
+
+    public function test_authorized_users_can_delete_replies(): void
+    {
+        $this->signIn($user = create(User::class));
+        $reply = create(Reply::class, ['user_id' => $user->id]);
+        
+        $this->delete("/replies/{$reply->id}")->assertStatus(302);
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
     }
 }

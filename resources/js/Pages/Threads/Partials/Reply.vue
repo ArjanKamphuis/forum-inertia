@@ -1,10 +1,13 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
+import { Link, useForm } from '@inertiajs/vue3';
 import { computed } from 'vue';
+
 import Card from '@/Components/Card.vue';
+import DangerButton from '@/Components/DangerButton.vue';
 import FavoriteButton from '@/Pages/Threads/Partials/FavoriteButton.vue';
 
 const props = defineProps({ reply: Object });
+const form = useForm({});
 const id = computed(() => `reply-${props.reply.id}`);
 </script>
 
@@ -22,6 +25,11 @@ const id = computed(() => `reply-${props.reply.id}`);
         </template>
         <template #body>
             {{ reply.body }}
+        </template>
+        <template v-if="reply.can_update" #footer>
+            <form @submit.prevent="form.delete(`/replies/${reply.id}`)">
+                <DangerButton class="h-6">Delete</DangerButton>
+            </form>
         </template>
     </Card>
 </template>
