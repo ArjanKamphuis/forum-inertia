@@ -33,7 +33,7 @@ class ThreadsController extends Controller
 
     public function show(Channel $channel, Thread $thread): Response
     {
-        $replies = $thread->replies()->paginate(20);
+        $replies = $thread->replies()->with(['owner', 'favorites'])->paginate(20);
         return Inertia::render('Threads/Show', [
             'thread' => ThreadShowResource::make($thread),
             'replies' => ReplyIndexResource::collection($replies),
@@ -71,7 +71,7 @@ class ThreadsController extends Controller
 
     protected function getThreads(Channel $channel, ThreadFilters $filters): Collection
     {
-        $threads = Thread::filter($filters);
+        $threads = Thread::with(['owner', 'channel'])->filter($filters);
         if ($channel->exists) {
             $threads->where('channel_id', $channel->id);
         }

@@ -14,8 +14,6 @@ class Reply extends Model
     use HasFactory;
     use RecordsActivity;
 
-    protected $with = ['owner', 'favorites'];
-
     public function path(): string
     {
         return "{$this->thread->path()}#reply-{$this->id}";
