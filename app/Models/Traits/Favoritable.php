@@ -17,6 +17,11 @@ trait Favoritable
         return $this->isFavorited() ? false : !! $this->favorites()->create(['user_id' => auth()->id()]);
     }
 
+    public function unfavorite(): bool
+    {
+        return !! $this->favorites()->where('user_id', auth()->id())->delete();
+    }
+
     public function isFavorited(): bool
     {
         return $this->favorites->where('user_id', auth()->id())->isNotEmpty();

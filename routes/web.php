@@ -44,5 +44,6 @@ Route::delete('/threads/{channel:slug}/{thread}', [ThreadsController::class, 'de
 Route::patch('/replies/{reply}', [RepliesController::class, 'update']);
 Route::delete('/replies/{reply}', [RepliesController::class, 'destroy']);
 Route::post('/replies/{reply}/favorites', [FavoritesController::class, 'store']);
+Route::delete('/replies/{reply}/favorites', [FavoritesController::class, 'destroy']);
 
 Route::get('/profiles/{user:name}', [ProfilesController::class, 'Show'])->name('profiles.show');

@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Favorite;
 use App\Models\Reply;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Response;
 
 class FavoritesController extends Controller
 {
@@ -14,8 +12,13 @@ class FavoritesController extends Controller
         $this->middleware('auth');
     }
 
-    public function store(Reply $reply): bool
+    public function store(Reply $reply): Response
     {
-        return $reply->favorite();
+        return response($reply->favorite());
+    }
+
+    public function destroy(Reply $reply): Response
+    {
+        return response($reply->unfavorite());
     }
 }
