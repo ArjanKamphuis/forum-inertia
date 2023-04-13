@@ -1,18 +1,19 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import { computed, defineAsyncComponent, ref } from 'vue';
 
 import Card from '@/Components/Card.vue';
-import FavoriteButton from '@/Pages/Threads/Partials/FavoriteButton.vue';
 import axios from 'axios';
 import EventBus from '@/Services/EventBus';
 
 const DangerButton = defineAsyncComponent(() => import('@/Components/DangerButton.vue'));
+const FavoriteButton = defineAsyncComponent(() => import('@/Pages/Threads/Partials/FavoriteButton.vue'));
 const PrimaryButton = defineAsyncComponent(() => import('@/Components/PrimaryButton.vue'));
 const SecondaryButton = defineAsyncComponent(() => import('@/Components/SecondaryButton.vue'));
 const TextArea = defineAsyncComponent(() => import('@/Components/TextArea.vue'));
 
 const props = defineProps({ reply: Object });
+const loggedIn = computed(() => !! usePage().props.auth.user);
 const id = computed(() => `reply-${props.reply.id}`);
 
 const editing = ref(false);
@@ -52,7 +53,7 @@ const destroy = () => {
                             {{ reply.owner.name }}
                         </Link> replied {{ reply.created_at }}...
                     </h4>
-                    <FavoriteButton :reply="reply" />
+                    <FavoriteButton v-if="loggedIn" :reply="reply" />
                 </div>
             </template>
             <template #body>

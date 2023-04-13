@@ -3,10 +3,18 @@
 namespace App\Models\Traits;
 
 use App\Models\Favorite;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 trait Favoritable
 {
+    protected static function bootFavoritable(): void
+    {
+        static::deleting(function(Model $model) {
+            $model->favorites->each->delete();
+        });
+    }
+
     public function favorites(): MorphMany
     {
         return $this->morphMany(Favorite::class, 'favoritable');
@@ -19,7 +27,7 @@ trait Favoritable
 
     public function unfavorite(): bool
     {
-        return !! $this->favorites()->where('user_id', auth()->id())->delete();
+        return !! $this->favorites()->where('user_id', auth()->id())->get()->each->delete();
     }
 
     public function isFavorited(): bool

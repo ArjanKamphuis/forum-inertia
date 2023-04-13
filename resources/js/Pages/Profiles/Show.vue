@@ -21,14 +21,15 @@ const mapComponents = {
             </h2>
         </template>
         <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="space-y-12">
+            <div v-if="Object.keys(activities).length" class="space-y-12">
                 <div v-for="(activity, date) in activities">
                     <h3 class="mb-4 text-lg font-bold text-center"><time class="border-b">{{ date }}</time></h3>
                     <div class="space-y-4">
                         <component v-for="record in activity" :is="mapComponents[record.type]" :author="profile.name" :subject="record.subject" />
                     </div>
                 </div>
-            </div>            
+            </div>
+            <div v-else class="text-center">There is no activity for this user yet. &#128542;</div>
         </div>
     </DefaultLayout>
 </template>
