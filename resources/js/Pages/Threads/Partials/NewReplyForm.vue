@@ -1,18 +1,22 @@
 <script setup>
+import { computed } from 'vue';
+import { Link, useForm, usePage } from '@inertiajs/vue3';
+
 import Card from '@/Components/Card.vue';
 import InputError from '@/Components/InputError.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextArea from '@/Components/TextArea.vue';
-import { useForm } from '@inertiajs/vue3';
 
 import EventBus from '@/Services/EventBus.js';
 
-const props = defineProps({ threadPath: { type: String, required: true } });
+const props = defineProps({ endpoint: { type: String, required: true } });
 const emits = defineEmits(['created']);
+
+const signedIn = computed(() => !! usePage().props.auth.user);
 const form = useForm({ body: '' });
 
 const addReply = () => {
-    form.post(`${props.threadPath}/replies`, {
+    form.post(props.endpoint, {
         preserveScroll: true,
         onSuccess: page => {
             form.reset();
@@ -24,7 +28,7 @@ const addReply = () => {
 </script>
 
 <template>
-    <Card>
+    <Card v-if="signedIn">
         <template #body>
             <form @submit.prevent="addReply" id="new-reply-form">
                 <TextArea v-model="form.body" id="body" class="block w-full h-24" placeholder="Have something to say?" required />
@@ -35,4 +39,9 @@ const addReply = () => {
             <PrimaryButton form="new-reply-form" :disabled="form.processing">Post</PrimaryButton>
         </template>
     </Card>
+    <p v-else class="text-center">
+        Please <Link class="text-blue-500 hover:underline" :href="route('login')">sign in</Link> 
+        or <Link class="text-blue-500 hover:underline" :href="route('register')">register</Link> 
+        to participate in this discussion.
+    </p>
 </template>

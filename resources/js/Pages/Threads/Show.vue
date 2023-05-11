@@ -42,7 +42,7 @@ const replyNoun = computed(() => repliesCount.value === 1 ? 'comment' : 'comment
                             {{ thread.body }}
                         </template>
                     </Card>
-                    <Replies :data="replies.data" :threadPath="thread.path" @added="repliesCount++" @removed="repliesCount--" />                    
+                    <Replies :data="replies.data" @added="repliesCount++" @removed="repliesCount--" />                    
                 </div>
                 <div class="flex-1">
                     <Card>
