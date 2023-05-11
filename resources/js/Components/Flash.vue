@@ -9,8 +9,8 @@ const show = ref(false);
 const timerId = ref(0);
 
 onMounted(() => {
-    if (usePage().props.flash) {
-        flash(usePage().props.flash);
+    if (usePage().props.flash.message) {
+        flash(usePage().props.flash.message);
     }
     EventBus.on('flash', flash);
 });
@@ -26,7 +26,7 @@ const flash = (message) => {
 };
 
 const hide = () => {
-    clearTimeout(timerId);
+    clearTimeout(timerId.value);
     timerId.value = setTimeout(() => { show.value = false }, 3000);
 };
 </script>

@@ -34,13 +34,18 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $channels = Cache::rememberForever('channels', fn() => Channel::all());
+        
+        $flash = ['message' => $request->session()->get('flash')];
+        if ($request->session()->has('newReply')) {
+            $flash['newReply'] = $request->session()->get('newReply');
+        }
 
         return array_merge(parent::share($request), [
             'auth' => [
                 'user' => $request->user(),
             ],
             'channels' => ChannelsResource::collection($channels),
-            'flash' => fn() => $request->session()->get('flash'),
+            'flash' => $flash,
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [
                     'location' => $request->url(),

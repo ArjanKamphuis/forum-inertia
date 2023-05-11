@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ReplyIndexResource;
 use App\Models\Channel;
 use App\Models\Reply;
 use App\Models\Thread;
@@ -19,10 +20,12 @@ class RepliesController extends Controller
 
     public function store(Channel $channel, Thread $thread): RedirectResponse
     {
-        $thread->addReply(array_merge($this->validateReply(), [
+        $reply = $thread->addReply(array_merge($this->validateReply(), [
             'user_id' => auth()->id()
         ]));
-        return back()->with('flash', 'Your reply has been left.');
+        return back()
+            ->with('flash', 'Your reply has been left.')
+            ->with('newReply', ReplyIndexResource::make($reply));
     }
 
     public function update(Reply $reply): void

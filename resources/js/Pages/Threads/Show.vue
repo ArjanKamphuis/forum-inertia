@@ -1,25 +1,19 @@
 <script setup>
-import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
-import { computed, defineAsyncComponent, ref, watch } from 'vue';
+import { Head, Link, useForm } from '@inertiajs/vue3';
+import { defineAsyncComponent, computed, ref } from 'vue';
 
 import Card from '@/Components/Card.vue';
 import DefaultLayout from '@/Layouts/DefaultLayout.vue';
+import Replies from '@/Pages/Threads/Partials/Replies.vue';
 
 const DangerButton = defineAsyncComponent(() => import('@/Components/DangerButton.vue'));
-const NewReplyForm = defineAsyncComponent(() => import('@/Pages/Threads/Partials/NewReplyForm.vue'));
-const Pagination = defineAsyncComponent(() => import('@/Components/Pagination.vue'));
-const Reply = defineAsyncComponent(() => import('@/Pages/Threads/Partials/Reply.vue'));
 
 const props = defineProps({ thread: Object, replies: Object, hasPages: Boolean });
-const signedIn = computed(() => !! usePage().props.auth.user);
-const repliesRef = ref(null);
 const form = useForm({});
-    
-if (location.hash) {
-    watch(repliesRef, () => {
-        document.querySelector(location.hash)?.scrollIntoView();
-    });
-}
+
+const repliesCount = ref(props.thread.replies_count);
+const replyNoun = computed(() => repliesCount.value === 1 ? 'comment' : 'comments');
+
 </script>
 
 <template>
@@ -48,14 +42,7 @@ if (location.hash) {
                             {{ thread.body }}
                         </template>
                     </Card>
-                    <Reply ref="repliesRef" v-for="reply in replies.data" :key="reply.id" :reply="reply" />
-                    <Pagination v-if="hasPages" :meta="replies.meta" :links="replies.links" />
-                    <NewReplyForm v-if="signedIn" :thread-path="thread.path" />
-                    <p v-else class="text-center">
-                        Please <Link class="text-blue-500 hover:underline" :href="route('login')">sign in</Link> 
-                        or <Link class="text-blue-500 hover:underline" :href="route('register')">register</Link> 
-                        to participate in this discussion.
-                    </p>
+                    <Replies :data="replies.data" :threadPath="thread.path" @added="repliesCount++" @removed="repliesCount--" />                    
                 </div>
                 <div class="flex-1">
                     <Card>
@@ -63,7 +50,7 @@ if (location.hash) {
                             <p>
                                 This thread was published <time>{{ thread.created_at }}</time> by 
                                 <Link class="text-blue-500 hover:underline" :href="route('profiles.show', thread.owner.name)">{{ thread.owner.name }}</Link>, 
-                                and currently has {{ thread.replies_count }} {{ thread.comment_noun }}.
+                                and currently has <span v-text="`${repliesCount} ${replyNoun}`" />.
                             </p>
                         </template>
                     </Card>
