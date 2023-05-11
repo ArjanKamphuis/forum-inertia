@@ -8,12 +8,11 @@ import Replies from '@/Pages/Threads/Partials/Replies.vue';
 
 const DangerButton = defineAsyncComponent(() => import('@/Components/DangerButton.vue'));
 
-const props = defineProps({ thread: Object, replies: Object, hasPages: Boolean });
+const props = defineProps({ thread: Object });
 const form = useForm({});
 
 const repliesCount = ref(props.thread.replies_count);
 const replyNoun = computed(() => repliesCount.value === 1 ? 'comment' : 'comments');
-
 </script>
 
 <template>
@@ -42,7 +41,7 @@ const replyNoun = computed(() => repliesCount.value === 1 ? 'comment' : 'comment
                             {{ thread.body }}
                         </template>
                     </Card>
-                    <Replies :data="replies.data" @added="repliesCount++" @removed="repliesCount--" />                    
+                    <Replies @added="repliesCount++" @removed="repliesCount--" />                    
                 </div>
                 <div class="flex-1">
                     <Card>

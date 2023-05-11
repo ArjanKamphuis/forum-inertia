@@ -33,11 +33,8 @@ class ThreadsController extends Controller
 
     public function show(Channel $channel, Thread $thread): Response
     {
-        $replies = $thread->replies()->with(['owner', 'favorites'])->paginate(20);
         return Inertia::render('Threads/Show', [
-            'thread' => ThreadShowResource::make($thread),
-            'replies' => ReplyIndexResource::collection($replies),
-            'hasPages' => $replies->hasPages()
+            'thread' => ThreadShowResource::make($thread)
         ]);
     }
 

@@ -6,17 +6,15 @@ import Card from '@/Components/Card.vue';
 import InputError from '@/Components/InputError.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextArea from '@/Components/TextArea.vue';
-
 import EventBus from '@/Services/EventBus.js';
 
-const props = defineProps({ endpoint: { type: String, required: true } });
 const emits = defineEmits(['created']);
 
 const signedIn = computed(() => !! usePage().props.auth.user);
 const form = useForm({ body: '' });
 
 const addReply = () => {
-    form.post(props.endpoint, {
+    form.post(`${location.pathname}/replies`, {
         preserveScroll: true,
         onSuccess: page => {
             form.reset();

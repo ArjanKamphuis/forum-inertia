@@ -15,7 +15,12 @@ class RepliesController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => 'index']);
+    }
+
+    public function index(Channel $channel, Thread $thread)
+    {
+        return ReplyIndexResource::collection($thread->replies()->with(['owner', 'favorites'])->paginate(1));
     }
 
     public function store(Channel $channel, Thread $thread): RedirectResponse

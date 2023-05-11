@@ -37,6 +37,7 @@ require __DIR__.'/auth.php';
 Route::get('/threads/create', [ThreadsController::class, 'create'])->name('threads.create');
 Route::get('/threads/{channel:slug?}', [ThreadsController::class, 'index'])->name('threads');
 Route::get('/threads/{channel:slug}/{thread}', [ThreadsController::class, 'show']);
+Route::get('/threads/{channel:slug}/{thread}/replies', [RepliesController::class, 'index'])->name('replies.index');
 Route::post('/threads/{channel:slug}/{thread}/replies', [RepliesController::class, 'store'])->name('threads.add-reply');
 Route::post('/threads', [ThreadsController::class, 'store']);
 Route::delete('/threads/{channel:slug}/{thread}', [ThreadsController::class, 'destroy']);
